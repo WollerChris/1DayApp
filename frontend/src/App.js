@@ -67,6 +67,23 @@ function App() {
     };
 
 
+    const handleDelete = (e) => {
+      const movieName = newMovie;
+      console.log(movieName);
+
+      fetch(`http://localhost:8081/movielist`, {
+           method: 'DELETE',
+           headers: {
+            'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({title: movieName})
+        })
+        .then(response => response.json()
+        .catch(error=>console.error(error))
+    )}
+  
+
+
   if (loading){
     return <p>loading</p>
   }
@@ -89,7 +106,7 @@ function App() {
       </div>
 
 
-<div className='FormInput'>
+          <div className='FormInput'>
                   <div className='FormHeader'>
                     <h1 className='FormTitle'>Details for new Movie</h1>
                   </div>
@@ -113,7 +130,7 @@ function App() {
                   <div className='Footer'>
                     <button className='AddBtn' onClick={() => {handleSubmit()}}>ADD</button>
                     <button className='UpdateBtn' onClick={() => {handleUpdate()}}>UPDATE</button>
-                    {/* <button className='DeleteBtn' onClick={() => {handleDelete()}}>DELETE USER</button> */}
+                    <button className='DeleteBtn' onClick={() => {handleDelete()}}>DELETE</button>
                   </div>
           </div>
 

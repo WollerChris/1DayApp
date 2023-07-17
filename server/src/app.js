@@ -50,23 +50,23 @@ app.put('/movielist', async (req, res) => {
     });
 })
 
-// app.delete('/movielist', (req, res) => {
-//     const title = req.body.title
-//     knex('movie_table')
-//     .where({title: title})
-//     .del()
-//     .then(result => {
-//         knex('movie_table')
-//             .select('*')
-//             .then(data => res.status(200).json(data))
-//             .catch(err =>
-//                 res.status(404).json({
-//                     message:
-//                         'The data you are looking for could not be found. Please try again'
-//                 })
-//             )
-//     });
-// })
+app.delete('/movielist', (req, res) => {
+    const title = req.body.title
+    knex('movie_table')
+    .where({title: title})
+    .del()
+    .then(result => {
+        knex('movie_table')
+            .select('*')
+            .then(data => res.status(200).json(data))
+            .catch(err =>
+                res.status(404).json({
+                    message:
+                        'The data you are looking for could not be found. Please try again'
+                })
+            )
+    });
+})
 
 
 app.listen(port, () => {
