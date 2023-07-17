@@ -14,9 +14,9 @@ import { useEffect} from 'react';
 function App() {
 
   const [movies, setMovieInfo] = useState({})
-  const [searchText, setSearchText] = useState('')
   const [newMovie, setNewMovie ] = useState('')
   const [loading, setLoading] = useState('true')
+  const [movieUpdateName, setMovieUpdateName] = useState('')
 
   useEffect(() => {
     fetch('http://localhost:8081/movielist')
@@ -46,6 +46,26 @@ function App() {
       window.location.reload();
     })
   };
+
+  const handleUpdate = (e) => {
+    const movieName = newMovie;
+    const UpdateName = movieUpdateName;
+    console.log(movieName, UpdateName);
+
+    fetch(`http://localhost:8081/movielist`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({title: movieName, update: UpdateName})
+      })
+      .then(response => response.json()
+      ).then(function (data) {
+        console.log(data)
+        window.location.reload();
+      });
+    };
+
 
   if (loading){
     return <p>loading</p>
@@ -81,12 +101,18 @@ function App() {
                               value={ newMovie }
                               onChange={(e) => setNewMovie(e.target.value)}
                               />
+                            <label> Name Change:</label> 
+                            <input
+                              type='text'
+                              value={ movieUpdateName }
+                              onChange={(e) => setMovieUpdateName(e.target.value)}
+                              />
                       </form>
                             
                   </div>
                   <div className='Footer'>
-                    {/* <button className='UpdateBtn' onClick={() => {handleUpdate()}}>UPDATE USER</button> */}
-                    <button className='AddBtn' onClick={() => {handleSubmit()}}>ADD Movie</button>
+                    <button className='AddBtn' onClick={() => {handleSubmit()}}>ADD</button>
+                    <button className='UpdateBtn' onClick={() => {handleUpdate()}}>UPDATE</button>
                     {/* <button className='DeleteBtn' onClick={() => {handleDelete()}}>DELETE USER</button> */}
                   </div>
           </div>

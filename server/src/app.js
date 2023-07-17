@@ -29,8 +29,44 @@ app.post('/movielist', async (req, res) => {
         .insert(createMovie)
         .returning('*')
         res.status(200).json(movieAdded)
-    })
+})
 
+app.put('/movielist', async (req, res) => {
+    const title = req.body.title
+    const updateTitle = req.body.update
+    knex('movie_table')
+    .where({title: title})
+    .update({title: updateTitle})
+    .then(result => {
+        knex('movie_table')
+            .select('*')
+            .then(data => res.status(200).json(data))
+            .catch(err =>
+                res.status(404).json({
+                    message:
+                        'The data you are looking for could not be found. Please try again'
+                })
+            )
+    });
+})
+
+// app.delete('/movielist', (req, res) => {
+//     const title = req.body.title
+//     knex('movie_table')
+//     .where({title: title})
+//     .del()
+//     .then(result => {
+//         knex('movie_table')
+//             .select('*')
+//             .then(data => res.status(200).json(data))
+//             .catch(err =>
+//                 res.status(404).json({
+//                     message:
+//                         'The data you are looking for could not be found. Please try again'
+//                 })
+//             )
+//     });
+// })
 
 
 app.listen(port, () => {
