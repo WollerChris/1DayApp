@@ -6,6 +6,7 @@ var cors = require('cors')
 
 
 app.use(express.json())
+app.use(cors())
 
 
 app.get('/', (req, res) => {
@@ -20,6 +21,17 @@ app.get('/movielist', cors(), (req, res) => {
             res.json(movie_list);
         })
 })
+
+app.post('/movielist', async (req, res) => {
+    const {title} = req.body
+    const createMovie = {title: title}
+    const movieAdded = await knex('movie_table')
+        .insert(createMovie)
+        .returning('*')
+        res.status(200).json(movieAdded)
+    })
+
+
 
 app.listen(port, () => {
     console.log(`Server running at ${port}.  Let's see some queries!`)
