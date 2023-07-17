@@ -79,10 +79,12 @@ function App() {
                 body: JSON.stringify({title: movieName})
         })
         .then(response => response.json()
-        .catch(error=>console.error(error))
-    )}
+        ).then(function (data) {
+          console.log(data)
+          window.location.reload();
+        });
+      };
   
-
 
   if (loading){
     return <p>loading</p>
