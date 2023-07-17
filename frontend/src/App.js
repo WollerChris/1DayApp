@@ -2,21 +2,16 @@ import react, { useState } from 'react';
 import './App.css';
 import { useEffect} from 'react';
 
-// const movies = [
-//   {title: 'Mean Girls'},
-//   {title: 'Hackers'},
-//   {title: 'The Grey'},
-//   {title: 'Sunshine'},
-//   {title: 'Ex Machina'},
-// ];
 
 
 function App() {
 
-  const [movies, setMovieInfo] = useState({})
+  const [movies, setMovieInfo] = useState({title: 'Mean Girls'})
   const [newMovie, setNewMovie ] = useState('')
   const [loading, setLoading] = useState('true')
   const [movieUpdateName, setMovieUpdateName] = useState('')
+  const [watched, setWatched] = useState(false)
+  const [searchText, setSearchText] = useState('')
 
   useEffect(() => {
     fetch('http://localhost:8081/movielist')
@@ -43,7 +38,7 @@ function App() {
     .then(response => response.json()
     ).then(function (data) {
       console.log(data)
-      window.location.reload();
+      // window.location.reload();
     })
   };
 
@@ -62,7 +57,7 @@ function App() {
       .then(response => response.json()
       ).then(function (data) {
         console.log(data)
-        window.location.reload();
+        // window.location.reload();
       });
     };
 
@@ -81,10 +76,16 @@ function App() {
         .then(response => response.json()
         ).then(function (data) {
           console.log(data)
-          window.location.reload();
+          // window.location.reload();
         });
       };
   
+
+
+  const lowerCaseHelper = () => {
+    let searchItem = document.getElementById("searchInput").value;
+    setSearchText(searchItem.toLowerCase())
+  }
 
   if (loading){
     return <p>loading</p>
@@ -93,18 +94,23 @@ function App() {
     
     <div className="App">
 
-      {/* <div className='searchContainer'id="searchContainer>">
-        <input className='searchInput' id="searchInput" type="text" name="search" 
-          placeholder="Search..." onChange={()=>{setSearchText(document.getElementById("searchInput").value)}}></input>
-      </div> */}
+      <div className='searchContainer'id="searchContainer">
+         <input className='searchInput' id="searchInput" type="text" name="search" 
+          placeholder="Search..." onChange={lowerCaseHelper}>
+          </input>
+      </div>
 
       <h1>Below is the list of movies</h1>
+
       <div>
-        {movies.map(movie => {
-          return (
-          <p>{movie.title}</p>
-          )},
-        )}
+        {console.log(movies)}
+        {movies.filter(movie => movie.title.toLowerCase().startsWith(searchText))
+          .map(title => (
+            <div>
+              <p>{title.title}</p>
+            </div>
+          ))
+      }
       </div>
 
 
